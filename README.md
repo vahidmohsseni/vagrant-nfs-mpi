@@ -9,9 +9,9 @@ A simple tutorial for clustering using Vagrant with an application on NFS and MP
 > **Network File System** (NFS) is a distributed file system protocol, allowing a user on a client computer to access files over a computer network much like local storage is accessed.
 
 ## What is MPI and MPICH?
-**Message Passing Interface** (MPI) is a standardized and portable message-passing standard designed to function on parallel computing architectures. 
+> **Message Passing Interface** (MPI) is a standardized and portable message-passing standard designed to function on parallel computing architectures. 
 
-**MPICH** is a high-performance and widely portable implementation of the Message Passing Interface (MPI)
+> **MPICH** is a high-performance and widely portable implementation of the Message Passing Interface (MPI)
 
 ## Installation 
 The porocess of installation on your system (host) is simple.
