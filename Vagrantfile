@@ -104,6 +104,22 @@ Vagrant.configure("2") do |config|
 
 
   end
+  
+  
+    config.vm.define "client2" do |client2|
+
+    client2.vm.box = "ubuntu/bionic64"
+    client2.vm.hostname = VM3
+
+    client2.vm.network "private_network", ip: Client2IP, hostname: true
+
+
+    # Install NFS on client
+    client2.vm.provision "InstallClientNFS", type: "shell", run: "once", inline: $installNFSClient
+
+
+  end
+  
 
 
 end
