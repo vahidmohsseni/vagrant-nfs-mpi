@@ -2,7 +2,7 @@
 A simple tutorial for clustering using Vagrant with an application on NFS and MPICH
 
 
-## MPI Section will be added shortly after TEST
+## MPI codes and section will be added shortly after TEST
 
 
 ## What is Vagrant?
