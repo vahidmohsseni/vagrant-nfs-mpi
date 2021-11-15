@@ -1,7 +1,22 @@
 # Vagrant + NFS + MPI
 A simple tutorial for clustering using Vagrant with an application on NFS and MPICH
 
-[TOC]
+# Table of Contents
+
+- [Vagrant + NFS + MPI](#vagrant---nfs---mpi)
+  * [What is Vagrant?](#what-is-vagrant-)
+  * [What is NFS?](#what-is-nfs-)
+  * [What is MPI and MPICH?](#what-is-mpi-and-mpich-)
+  * [Installation](#installation)
+    + [Install Vagrant](#install-vagrant)
+      - [Ubuntu-based OS](#ubuntu-based-os)
+      - [Windows and Other OSs](#windows-and-other-oss)
+    + [Install VirtualBox](#install-virtualbox)
+      - [Ubuntu-based OS](#ubuntu-based-os-1)
+      - [Windows and Other OSs](#windows-and-other-oss-1)
+  * [Run and Connect to VMs](#run-and-connect-to-vms)
+  * [Test Socket Connection](#test-socket-connection)
+  * [MPI Test on machines](#mpi-test-on-machines)
 
 ## What is Vagrant?
 > **Vagrant** is a tool for building and managing virtual machine environments in a single workflow. With an easy-to-use workflow and focus on automation, Vagrant lowers development environment setup time, increases production parity, and makes the "works on my machine" excuse a relic of the past.
