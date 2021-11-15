@@ -1,6 +1,8 @@
 # Vagrant + NFS + MPI
 A simple tutorial for clustering using Vagrant with an application on NFS and MPICH
 
+`Vagrantfile` is well documented to better understand how it works!
+
 # Table of Contents
 
 - [Vagrant + NFS + MPI](#vagrant---nfs---mpi)
