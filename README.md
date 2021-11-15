@@ -64,5 +64,19 @@ To delete VMs
 vagrant destory [name of specific VM]
 ```
 
+## Test Socket Connection
+To make sure that the connection between clients and server nodes (VMs) is established and works properly, two python programs is written. The program is simple. Note that you should always run **server FIRST**. Moreover, every changes in `socket_test` directory directly affects the codes in VM after the VMs are `up`.
 
+In server-side, it opens a socket binds and listens to port 9000 on server. Following instructions lets you to activate and run the program on the server. The program is multi-threaded which means it can handle multiple clients' connection simultaneously. To stop the server from terminal just use `ctrl+c`.
 
+```shell
+vagrant ssh server
+python3 server.py
+```
+
+In client-side, it tries to establish a connection to server which is available in the address "192.168.10.2:9000". Following instruction helps to run this program.
+
+```shell
+vagrant ssh client1
+python3 client.py
+```
