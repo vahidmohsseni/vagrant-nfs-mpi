@@ -2,13 +2,15 @@ import socket
 import time
 import random
 
+
 SERVERADDRESS = ("192.168.10.2", 9000)
 
 
-
 def main():
+
     s = socket.socket()
     print("connect to server: ", SERVERADDRESS)
+
     s.connect(SERVERADDRESS)
 
     rand = random.randrange(5, 15)
@@ -17,6 +19,7 @@ def main():
 
     while True:
         time.sleep(1)
+
         s.sendall(message)
         print("message sent!")
 
@@ -30,7 +33,6 @@ def main():
         if echo == b'terminate':
             s.close()
             break
-
 
 
 if __name__ == "__main__":

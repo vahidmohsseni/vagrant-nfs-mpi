@@ -5,10 +5,6 @@ import threading
 
 SERVERADDRESS = ("0.0.0.0", 9000)
 
-def echo(connection, message):
-
-    return 1
-
 
 def receive_message(connection, client_address):
     while True:
@@ -19,8 +15,6 @@ def receive_message(connection, client_address):
         if message == b'terminate':
             connection.close()
             break
-            
-
 
 
 def main():
