@@ -18,7 +18,27 @@ A simple tutorial for clustering using Vagrant with an application on NFS and MP
 
 ## Installation 
 The porocess of installation on your system (host) is simple.
+
+### Install Vagrant
+
+#### Ubuntu-based OS
+```shell
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install vagrant
+```
+#### Windows and Other OSs
 Just follow the instrution on **[Vagrant Installation Page](https://www.vagrantup.com/downloads "Vagrant Installation Page")**.
+
+### Install VirtualBox
+
+#### Ubuntu-based OS
+```shell
+sudo apt install virtualbox
+```
+
+#### Windows and Other OSs
+Download and install from this **[link](https://www.virtualbox.org/wiki/Downloads)**
 
 
 ## Run and Connect to VMs
