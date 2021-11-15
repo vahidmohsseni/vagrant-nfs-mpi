@@ -116,6 +116,8 @@ Hello World, My rank is 0 and size is 3 processors
 Hello World, My rank is 2 and size is 3 processors
 ```
 
+
+``On server VM:``
 ```shell
 mpicc -o mpi_example mpi_example.c
 mpiexec -n 6 -f host_file ./mpi_example
