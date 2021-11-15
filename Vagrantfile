@@ -42,26 +42,25 @@ SCRIPT
 # Install NFS on clients
 $installNFSClient = <<SCRIPT
 apt install nfs-common -y
-mkdir -p cmirror
-mount 192.168.10.2:/mnt/mirror cmirror
-touch cmirror/file.txt
-echo hello >> cmirror/file.txt
+mkdir -p /mnt/mirror
+mount 192.168.10.2:/mnt/mirror /mnt/mirror
+touch /mnt/mirror/file.txt
+echo hello >> /mnt/mirror/file.txt
 SCRIPT
 
 
 # Install MPICH
-# Commands goes here!
+$installMPICH = <<SCRIPT
+apt update
+apt install mpich -y
+SCRIPT
 
 
 
 # Creatign VARIABLES 
 VM1 = "server"
-VM2 = "client1"
-VM3 = "client2"
 
 ServerIP  = "192.168.10.2"
-Client1IP = "192.168.10.3"
-Client2IP = "192.168.10.4"
 
 
 Vagrant.configure("2") do |config|
@@ -80,43 +79,65 @@ Vagrant.configure("2") do |config|
     # CAUTION: unconmmenting following line results is enabling password login
     # server.vm.provision "sshPassAuth", type: "shell", run: "once", inline: $activatePasswordAuth
 
+    # Add temporary private and public key to server
+    # CAUTION: The keys should be removed after initial configuration
+    server.vm.provision "copySSHKeys", type: "file", source: "ssh_keys/", destination: "/home/vagrant/"
+    server.vm.provision "configSSH", type: "shell", inline: <<-SCRIPT
+    cat ssh_keys/id_rsa.pub >> .ssh/authorized_keys
+    cp ssh_keys/id_rsa .ssh/.
+    chmod 600 .ssh/id_rsa
+    chown vagrant:vagrant .ssh/id_rsa
+    SCRIPT
+
     # Install NFS on server
     server.vm.provision "InstallServerNFS", type: "shell", run: "once", inline: $installNFSServer
 
     # Copy files into server
-    server.vm.provision "copyServerPy", type: "file", source: "socket_test/server.py", destination: "/home/vagrant/", run: "always"
+    server.vm.provision "CopyServerPy", type: "file", source: "socket_test/server.py", destination: "/home/vagrant/", run: "always"
+
+    # Install MPICH
+    server.vm.provision "InstallMPICH", type: "shell", run: "once", inline: $installMPICH
+
+    # Copy MPI examples into NFS directory
+    server.vm.provision "CopyMPIExample", type: "file", source: "mpi_codes/", destination: "/mnt/mirror/"
 
 
   end
 
 
+  (1..2).each do |i|
+    config.vm.define "client#{i}" do |node|
+      
+      node.vm.box = "ubuntu/bionic64"
+      node.vm.hostname = "client#{i}"
+
+      node.vm.network "private_network", ip: "192.168.10.1#{i}", hostname: true
 
 
+      # Install NFS on client
+      node.vm.provision "InstallClientNFS", type: "shell", run: "once", inline: $installNFSClient
 
+      # Mount NFS Folder after reboot every time
+      # Also you can add following line at /etc/fstab but not recommended.
+      # 192.168.10.2:/mnt/mirror    /mnt/mirror   nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0
+      node.vm.provision "MountNFS", type: "shell", run: "always", inline: "mount 192.168.10.2:/mnt/mirror /mnt/mirror"
 
-  config.vm.define "client1" do |client1|
+      # Add temporary private and public key to server
+      # CAUTION: The keys should be removed after initial configuration
+      node.vm.provision "CopySSHKeys", type: "file", source: "ssh_keys/id_rsa.pub", destination: "/home/vagrant/"
+      node.vm.provision "ConfigSSH", type: "shell", inline: <<-SCRIPT
+      cat id_rsa.pub >> .ssh/authorized_keys
+      SCRIPT
 
-    client1.vm.box = "ubuntu/bionic64"
-    client1.vm.hostname = VM2
+      # Copy files into client
+      node.vm.provision "CopyClientPy", type: "file", source: "socket_test/client.py", destination: "/home/vagrant/", run: "always"
 
-    client1.vm.network "private_network", ip: Client1IP, hostname: true
+    
+      # Install MPICH
+      node.vm.provision "InstallMPICH", type: "shell", run: "once", inline: $installMPICH
 
-
-    # Install NFS on client
-    client1.vm.provision "InstallClientNFS", type: "shell", run: "once", inline: $installNFSClient
-
-    # Mount NFS Folder after reboot every time
-    # Also you can add following line at /etc/fstab but not recommended.
-    # 192.168.10.2:/mnt/mirror    /home/vagrant/cmirror   nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0
-    client1.vm.provision "MountNFS", type: "shell", run: "always", inline: "mount 192.168.10.2:/mnt/mirror cmirror"
-
-    # Copy files into client
-    client1.vm.provision "copyClientPy", type: "file", source: "socket_test/client.py", destination: "/home/vagrant/", run: "always"
-
-
+    end
 
   end
-  
-
 
 end
