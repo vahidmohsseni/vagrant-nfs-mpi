@@ -83,6 +83,9 @@ Vagrant.configure("2") do |config|
     # Install NFS on server
     server.vm.provision "InstallServerNFS", type: "shell", run: "once", inline: $installNFSServer
 
+    # Copy files into server
+    server.vm.provision "copyServerPy", type: "file", source: "socket_test/server.py", destination: "/home/vagrant/", run: "always"
+
 
   end
 
@@ -102,20 +105,14 @@ Vagrant.configure("2") do |config|
     # Install NFS on client
     client1.vm.provision "InstallClientNFS", type: "shell", run: "once", inline: $installNFSClient
 
+    # Mount NFS Folder after reboot every time
+    # Also you can add following line at /etc/fstab but not recommended.
+    # 192.168.10.2:/mnt/mirror    /home/vagrant/cmirror   nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0
+    client1.vm.provision "MountNFS", type: "shell", run: "always", inline: "mount 192.168.10.2:/mnt/mirror cmirror"
 
-  end
-  
-  
-    config.vm.define "client2" do |client2|
+    # Copy files into client
+    client1.vm.provision "copyClientPy", type: "file", source: "socket_test/client.py", destination: "/home/vagrant/", run: "always"
 
-    client2.vm.box = "ubuntu/bionic64"
-    client2.vm.hostname = VM3
-
-    client2.vm.network "private_network", ip: Client2IP, hostname: true
-
-
-    # Install NFS on client
-    client2.vm.provision "InstallClientNFS", type: "shell", run: "once", inline: $installNFSClient
 
 
   end
