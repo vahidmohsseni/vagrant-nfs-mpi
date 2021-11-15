@@ -59,7 +59,7 @@ Download and install from this **[link](https://www.virtualbox.org/wiki/Download
 ## Run and Connect to VMs
 You can easily have a cluster with 3 nodes by running the following command. 
 ```shell
-git pull https://github.com/vahidmohsseni/vagrant-nfs-mpi
+git clone https://github.com/vahidmohsseni/vagrant-nfs-mpi
 cd vagrant-nfs-mpi
 vagrant up
 ```
