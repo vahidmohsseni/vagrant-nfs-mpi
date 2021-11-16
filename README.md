@@ -59,7 +59,7 @@ Download and install from this **[link](https://www.virtualbox.org/wiki/Download
 ## Run and Connect to VMs
 You can easily have a cluster with 3 nodes by running the following command. 
 ```shell
-git pull https://github.com/vahidmohsseni/vagrant-nfs-mpi
+git clone https://github.com/vahidmohsseni/vagrant-nfs-mpi
 cd vagrant-nfs-mpi
 vagrant up
 ```
@@ -116,6 +116,8 @@ Hello World, My rank is 0 and size is 3 processors
 Hello World, My rank is 2 and size is 3 processors
 ```
 
+
+``On server VM:``
 ```shell
 mpicc -o mpi_example mpi_example.c
 mpiexec -n 6 -f host_file ./mpi_example
