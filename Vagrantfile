@@ -57,7 +57,7 @@ SCRIPT
 
 
 
-# Creating VARIABLES 
+# Declare VARIABLES 
 VM1 = "server"
 
 ServerIP  = "192.168.10.2"
