@@ -1,5 +1,6 @@
 # Start Configuration of the Machines with shell scripts
 
+
 # Run this command within shell provision
 # You should pass the args: ["username"]
 # Syntax mentioned in server
@@ -56,8 +57,8 @@ apt install mpich -y
 SCRIPT
 
 
-
 # Declare VARIABLES 
+
 VM1 = "server"
 
 ServerIP  = "192.168.10.2"
@@ -65,12 +66,12 @@ ServerIP  = "192.168.10.2"
 
 Vagrant.configure("2") do |config|
 
+
   config.vm.define VM1 do |server|
 
     # creating a vm from base image
     server.vm.box = "ubuntu/bionic64"
     server.vm.hostname = VM1
-
     server.vm.network "private_network", ip: ServerIP, hostname: true
 
     # Add new sudoer user
@@ -81,8 +82,8 @@ Vagrant.configure("2") do |config|
 
     # Add temporary private and public key to server
     # CAUTION: The keys should be removed after initial configuration
-    server.vm.provision "copySSHKeys", type: "file", source: "ssh_keys/", destination: "/home/vagrant/"
-    server.vm.provision "configSSH", type: "shell", inline: <<-SCRIPT
+    server.vm.provision "CopySSHKeys", type: "file", source: "ssh_keys/", destination: "/home/vagrant/"
+    server.vm.provision "ConfigSSH", type: "shell", inline: <<-SCRIPT
     cat ssh_keys/id_rsa.pub >> .ssh/authorized_keys
     cp ssh_keys/id_rsa .ssh/.
     chmod 600 .ssh/id_rsa
@@ -101,7 +102,6 @@ Vagrant.configure("2") do |config|
     # Copy MPI examples into NFS directory
     server.vm.provision "CopyMPIExample", type: "file", source: "mpi_codes/", destination: "/mnt/mirror/"
 
-
   end
 
 
@@ -110,9 +110,7 @@ Vagrant.configure("2") do |config|
       
       node.vm.box = "ubuntu/bionic64"
       node.vm.hostname = "client#{i}"
-
       node.vm.network "private_network", ip: "192.168.10.1#{i}", hostname: true
-
 
       # Install NFS on client
       node.vm.provision "InstallClientNFS", type: "shell", run: "once", inline: $installNFSClient
@@ -132,7 +130,6 @@ Vagrant.configure("2") do |config|
       # Copy files into client
       node.vm.provision "CopyClientPy", type: "file", source: "socket_test/client.py", destination: "/home/vagrant/", run: "always"
 
-    
       # Install MPICH
       node.vm.provision "InstallMPICH", type: "shell", run: "once", inline: $installMPICH
 
